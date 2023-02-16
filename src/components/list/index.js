@@ -6,6 +6,7 @@ import ListDetails from "./details";
 import { DragDropContext } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
 import { dropCardCompleted } from "store/modules/list/actions";
+import { Droppable } from "react-beautiful-dnd";
 function List() {
   const listData = useSelector((state) => state.list.data);
   const [list, setList] = useState([]);
@@ -28,12 +29,14 @@ function List() {
   };
   const onDragEnd = (result) => {
     if (!result.destination) return;
-    const { source, destination } = result;
+    const { source, destination, type } = result;
     let saveData = {
+      
       sourceId: source.droppableId,
       destinationId: destination.droppableId,
       sourceIndex: source.index,
       destinationIndex: destination.index,
+      type,
     };
     dispatch(dropCardCompleted(saveData));
     return;
@@ -42,18 +45,27 @@ function List() {
     <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
       <Box sx={style}>
         <CreateList />
-        <div className="flex ml-5 gap-6 items-start">
-          {list.map((el) => {
-            return (
-              <ListDetails
-                id={el.id}
-                title={el.title}
-                key={el.id}
-                cards={el.cards}
-              />
-            );
-          })}
-        </div>
+        <Droppable droppableId="lists" direction="horizontal" type="list">
+          {(provided) => (
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className="flex ml-5 gap-6 items-start"
+            >
+              {list.map((el, index) => {
+                return (
+                  <ListDetails
+                    index={index}
+                    id={el.id}
+                    title={el.title}
+                    key={el.id}
+                    cards={el.cards}
+                  />
+                );
+              })}
+            </div>
+          )}
+        </Droppable>
       </Box>
     </DragDropContext>
   );

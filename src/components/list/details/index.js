@@ -11,9 +11,9 @@ import { deleteListOperation } from "store/modules/list/operations";
 import { useDispatch, useSelector } from "react-redux";
 import CreateCard from "components/card/create";
 import Card from "components/card";
-import { Droppable } from "react-beautiful-dnd";
+import { Droppable, Draggable } from "react-beautiful-dnd";
 function ListDetails(props) {
-  const { title, id, cards } = props;
+  const { title, id, cards, index } = props;
   const dispatch = useDispatch();
   const isFetching = useSelector((state) => state.list.isDeleteFetching);
   const [isEditing, setIsEditing] = useState(false);
@@ -30,88 +30,101 @@ function ListDetails(props) {
     };
   });
   return (
-    <Droppable droppableId={id}>
-      {(provided, snapshot) => (
+    <Draggable draggableId={id} index={index}>
+      {(provided) => (
         <div
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
           ref={provided.innerRef}
-          {...provided.droppableProps}
-          className={`rounded-b border max-h-64 bg-slate-50 shadow-md list-details list-${id} w-80 flex justify-between p-3 flex-col`}
         >
-          {isEditing ? (
-            <EditList
-              id={id}
-              saveEdit={() => setIsEditing(false)}
-              title={title}
-            />
-          ) : (
-            <div className="flex justify-between sticky">
-              <h3 className="text-lg font-semibold">{title}</h3>
-              <div className="flex">
-                <IconButton
-                  color="primary"
-                  size="small"
-                  onClick={() => setIsEditing(true)}
-                  aria-label="edit"
-                >
-                  <EditIcon />
-                </IconButton>
-                {isFetching ? (
-                  <LoadingButton
-                    loading
-                    loadingPosition="center"
-                    startIcon={<SaveIcon />}
-                    variant="text"
-                    size="small"
+          <Droppable droppableId={id}>
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className={`rounded-b border max-h-content overflow-auto bg-slate-50 shadow-md list-details list-${id} w-80 flex justify-between p-3 flex-col`}
+              >
+                {isEditing ? (
+                  <EditList
+                    id={id}
+                    saveEdit={() => setIsEditing(false)}
+                    title={title}
                   />
                 ) : (
-                  <IconButton
-                    onClick={() => dispatch(deleteListOperation(id))}
-                    color="error"
-                    size="small"
-                    aria-label="delete"
-                  >
-                    <DeleteIcon />
-                  </IconButton>
+                  <div className="flex justify-between sticky">
+                    <h3 className="text-lg font-semibold">{title}</h3>
+                    <div className="flex">
+                      <IconButton
+                        color="primary"
+                        size="small"
+                        onClick={() => setIsEditing(true)}
+                        aria-label="edit"
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      {isFetching ? (
+                        <LoadingButton
+                          loading
+                          loadingPosition="center"
+                          startIcon={<SaveIcon />}
+                          variant="text"
+                          size="small"
+                        />
+                      ) : (
+                        <IconButton
+                          onClick={() => dispatch(deleteListOperation(id))}
+                          color="error"
+                          size="small"
+                          aria-label="delete"
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      )}
+                    </div>
+                  </div>
                 )}
+                <div className="cards overflow-y-auto flex-col flex flex-auto">
+                  {cards.length > 0 &&
+                    cards.map((el, index) => {
+                      return (
+                        <Card
+                          index={index}
+                          key={el.id}
+                          id={el.id}
+                          listId={id}
+                          title={el.title}
+                          desc={el.description}
+                        />
+                      );
+                    })}
+                </div>
+                <div className="mt-4">
+                  {addNewCardOpen ? (
+                    <CreateCard
+                      id={id}
+                      onSave={() => setAddNewCardOpen(false)}
+                    />
+                  ) : (
+                    <Button
+                      startIcon={<AddSharpIcon />}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setAddNewCardOpen(true);
+                      }}
+                      variant="text"
+                      color="primary"
+                    >
+                      Add new card
+                    </Button>
+                  )}
+                </div>
+                {provided.placeholder}
               </div>
-            </div>
-          )}
-          <div className="cards overflow-y-auto max-h-64">
-            {cards.length > 0 &&
-              cards.map((el, index) => {
-                return (
-                  <Card
-                    index={index}
-                    key={el.id}
-                    id={el.id}
-                    listId={id}
-                    title={el.title}
-                    desc={el.description}
-                  />
-                );
-              })}
-          </div>
-          <div className="mt-4">
-            {addNewCardOpen ? (
-              <CreateCard id={id} onSave={() => setAddNewCardOpen(false)} />
-            ) : (
-              <Button
-                startIcon={<AddSharpIcon />}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setAddNewCardOpen(true);
-                }}
-                variant="text"
-                color="primary"
-              >
-                Add new card
-              </Button>
             )}
-          </div>
-          {provided.placeholder}
+          </Droppable>
         </div>
       )}
-    </Droppable>
+    </Draggable>
   );
 }
 

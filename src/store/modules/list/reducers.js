@@ -145,42 +145,49 @@ const reducersMap = {
     };
   },
   [types.DROP_CARD_COMPLETED]: (state, action) => {
-    const { sourceId, destinationId, sourceIndex, destinationIndex } =
+    const { sourceId, destinationId, sourceIndex, destinationIndex, type } =
       action.payload;
     let newList = [];
-    const sourceCol = [...state.data].filter((el) => el.id === sourceId);
-    const destCol = [...state.data].filter((el) => el.id === destinationId);
-    const sourceCards = [...sourceCol[0].cards];
-    const destCards = [...destCol[0].cards];
-    const [removed] = sourceCards.splice(sourceIndex, 1);
-    if (sourceId === destinationId) {
-      sourceCards.splice(destinationIndex, 0, removed);
-      newList = [...state.data].map((el) => {
-        if (el.id === sourceId) {
-          el = {
-            ...sourceCol[0],
-            cards: sourceCards,
-          };
-        }
-        return el;
-      });
+    if (type === "list") {
+      let listData = [...state.data];
+      const list = listData.splice(sourceIndex, 1);
+      listData.splice(destinationIndex, 0, ...list);
+      newList = [...listData];
     } else {
-      destCards.splice(destinationIndex, 0, removed);
-      newList = [...state.data].map((el) => {
-        if (el.id === sourceId) {
-          el = {
-            ...sourceCol[0],
-            cards: sourceCards,
-          };
-        }
-        if (el.id === destinationId) {
-          el = {
-            ...destCol[0],
-            cards: destCards,
-          };
-        }
-        return el;
-      });
+      const sourceCol = [...state.data].filter((el) => el.id === sourceId);
+      const destCol = [...state.data].filter((el) => el.id === destinationId);
+      const sourceCards = [...sourceCol[0].cards];
+      const destCards = [...destCol[0].cards];
+      const [removed] = sourceCards.splice(sourceIndex, 1);
+      if (sourceId === destinationId) {
+        sourceCards.splice(destinationIndex, 0, removed);
+        newList = [...state.data].map((el) => {
+          if (el.id === sourceId) {
+            el = {
+              ...sourceCol[0],
+              cards: sourceCards,
+            };
+          }
+          return el;
+        });
+      } else {
+        destCards.splice(destinationIndex, 0, removed);
+        newList = [...state.data].map((el) => {
+          if (el.id === sourceId) {
+            el = {
+              ...sourceCol[0],
+              cards: sourceCards,
+            };
+          }
+          if (el.id === destinationId) {
+            el = {
+              ...destCol[0],
+              cards: destCards,
+            };
+          }
+          return el;
+        });
+      }
     }
     return {
       ...state,
