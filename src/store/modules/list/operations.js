@@ -42,3 +42,17 @@ export const deleteListOperation = (id) => {
     }
   };
 };
+
+export const createNewCardOperation = (data) => {
+  return async (dispatch) => {
+    dispatch(actions.createCardStart());
+    try {
+      await sleep();
+      dispatch(actions.createCardCompleted(data));
+      toast.success("Card was successfully created");
+    } catch (error) {
+      toast.error("Something went wrong");
+      console.error(error);
+    }
+  };
+};

@@ -3,7 +3,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import Button from "@mui/material/Button";
 import { LoadingButton } from "@mui/lab";
 import { FormControl, Input, TextField } from "@mui/material";
-import { checkAlphaNumeric } from "helpers/alphanumericCheck";
+import { checkAlphaNumericNotEmpty } from "helpers/alphanumericCheck";
 import { useDispatch, useSelector } from "react-redux";
 import { editListOperation } from "store/modules/list/operations";
 function EditList(props) {
@@ -13,12 +13,9 @@ function EditList(props) {
   const [newListName, setNewListName] = useState(title);
   const [nameError, setNameError] = useState("");
   const checkValid = async (bool) => {
-    let result = checkAlphaNumeric(newListName);
+    let result = checkAlphaNumericNotEmpty(newListName);
     if (result) {
       return setNameError(result);
-    }
-    if (newListName.length === 0) {
-      return setNameError(`Name should't be empty`);
     }
     if (bool) {
       let saveData = {

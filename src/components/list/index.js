@@ -17,10 +17,10 @@ function List() {
         {list.map((el) => {
           return (
             <ListDetails
-              setList={setList}
               id={el.id}
               title={el.title}
               key={el.id}
+              cards={el.cards}
             />
           );
         })}

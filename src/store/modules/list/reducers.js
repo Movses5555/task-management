@@ -15,7 +15,7 @@ const reducersMap = {
     let newItem = {
       id: uuidv4(),
       title: payload,
-      tasks: [],
+      cards: [],
     };
     return {
       ...state,
@@ -61,6 +61,38 @@ const reducersMap = {
       ...state,
       data: newData,
       isDeleteFetching: false,
+    };
+  },
+  [types.CREATE_CARD_START]: (state) => {
+    return {
+      ...state,
+      isCreateFetching: true,
+    };
+  },
+  [types.CREATE_CARD_COMPLETED]: (state, action) => {
+    const { id, title, description } = action.payload;
+    let newCard = {
+      id:uuidv4(),
+      title,
+      description,
+    };
+    console.log('====================================');
+    console.log(newCard);
+    console.log('====================================');
+    let newList = [...state.data].map((el) => {
+      if (el.id === id) {
+        el = {
+          ...el,
+          cards: [...el.cards, newCard],
+        };
+      }
+      return el;
+    });
+    console.log(newList);
+    return {
+      ...state,
+      data: newList,
+      isCreateFetching: false,
     };
   },
 };

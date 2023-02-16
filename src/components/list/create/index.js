@@ -4,7 +4,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import Button from "@mui/material/Button";
 import { LoadingButton } from "@mui/lab";
 import { FormControl, TextField } from "@mui/material";
-import { checkAlphaNumeric } from "helpers/alphanumericCheck";
+import { checkAlphaNumericNotEmpty } from "helpers/alphanumericCheck";
 import { useDispatch, useSelector } from "react-redux";
 import { createNewList } from "store/modules/list/operations";
 function CreateList() {
@@ -14,12 +14,9 @@ function CreateList() {
   const [listName, setListName] = useState("");
   const [nameError, setNameError] = useState("");
   const checkValid = async (bool) => {
-    let result = checkAlphaNumeric(listName);
+    let result = checkAlphaNumericNotEmpty(listName);
     if (result) {
       return setNameError(result);
-    }
-    if (listName.length === 0) {
-      return setNameError(`Name should't be empty`);
     }
     if (bool) {
       await dispatch(createNewList(listName));
@@ -43,13 +40,13 @@ function CreateList() {
       <Button
         onClick={() => setMenuOpen(!menuOpen)}
         startIcon={<AddSharpIcon />}
-        variant="outlined"
+        variant="contained"
         color="primary"
       >
         Create new list
       </Button>
       {menuOpen && (
-        <div className="p-3 border border-blue-300 border-t-0">
+        <div className="p-3 border shadow-md bg-white border-t-0">
           <FormControl>
             <TextField
               label="Name"

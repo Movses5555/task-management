@@ -10,8 +10,9 @@ import { LoadingButton } from "@mui/lab";
 import { deleteListOperation } from "store/modules/list/operations";
 import { useDispatch, useSelector } from "react-redux";
 import CreateCard from "components/card/create";
+import Card from "components/card";
 function ListDetails(props) {
-  const { title, id } = props;
+  const { title, id, cards } = props;
   const dispatch = useDispatch();
   const isFetching = useSelector((state) => state.list.isDeleteFetching);
   const [isEditing, setIsEditing] = useState(false);
@@ -29,7 +30,7 @@ function ListDetails(props) {
   });
   return (
     <div
-      className={`rounded border list-${id} border-blue-300 min-w-75 flex justify-between p-3 flex-col`}
+      className={`rounded-b border bg-slate-200 shadow-md list-details list-${id} min-w-75 flex justify-between p-3 flex-col`}
     >
       {isEditing ? (
         <EditList id={id} saveEdit={() => setIsEditing(false)} title={title} />
@@ -66,6 +67,17 @@ function ListDetails(props) {
           </div>
         </div>
       )}
+      {cards.length > 0 &&
+        cards.map((el) => {
+          return (
+            <Card
+              key={el.id}
+              id={el.id}
+              title={el.title}
+              desc={el.description}
+            />
+          );
+        })}
       <div className="mt-4">
         {addNewCardOpen ? (
           <CreateCard id={id} onSave={() => setAddNewCardOpen(false)} />
