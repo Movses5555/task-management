@@ -6,6 +6,7 @@ import List from "./components/list";
 import Nav from "./components/nav";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { dark, light } from "theme";
+import { Box } from "@mui/material";
 
 function App() {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
@@ -15,10 +16,13 @@ function App() {
   };
   return (
     <ThemeProvider theme={isDarkTheme ? createTheme(dark) : createTheme(light)}>
-      <div className="w-screen h-screen app-container overflow-x-hidden">
+      <Box
+        sx={{ backgroundColor: "primary.dark" }}
+        className="w-screen h-screen overflow-x-hidden"
+      >
         <Nav toggleTheme={changeTheme} />
         <List />
-      </div>
+      </Box>
       {ReactDOM.createPortal(
         <ToastContainer className="toaster" hideProgressBar autoClose={3000} />,
         document.getElementById("toasts")
