@@ -7,7 +7,7 @@ import Nav from "./components/nav";
 function App() {
   return (
     <>
-      <div className="w-screen h-screen app-container">
+      <div className="w-screen h-screen app-container overflow-x-hidden">
         <Nav />
         <List />
       </div>

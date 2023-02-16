@@ -33,6 +33,20 @@ const createCardCompleted = (data) => ({
   payload: data,
 });
 
+const deleteCardStart = () => ({
+  type: types.DELETE_CARD_START,
+});
+const deleteCardCompleted = (data) => ({
+  type: types.DELETE_CARD_COMPLETED,
+  payload: data,
+});
+const editCardStart = () => ({
+  type: types.EDIT_CARD_START,
+});
+const editCardCompleted = (data) => ({
+  type: types.EDIT_CARD_COMPLETED,
+  payload: data,
+});
 export {
   createListCompleted,
   createListStart,
@@ -42,4 +56,8 @@ export {
   deleteListCompleted,
   createCardStart,
   createCardCompleted,
+  deleteCardStart,
+  deleteCardCompleted,
+  editCardStart,
+  editCardCompleted,
 };

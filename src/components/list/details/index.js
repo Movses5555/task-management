@@ -30,12 +30,12 @@ function ListDetails(props) {
   });
   return (
     <div
-      className={`rounded-b border bg-slate-200 shadow-md list-details list-${id} min-w-75 flex justify-between p-3 flex-col`}
+      className={`rounded-b border max-h-64 bg-slate-50 shadow-md list-details list-${id} w-80 flex justify-between p-3 flex-col`}
     >
       {isEditing ? (
         <EditList id={id} saveEdit={() => setIsEditing(false)} title={title} />
       ) : (
-        <div className="flex justify-between">
+        <div className="flex justify-between sticky">
           <h3 className="text-lg font-semibold">{title}</h3>
           <div className="flex">
             <IconButton
@@ -67,17 +67,20 @@ function ListDetails(props) {
           </div>
         </div>
       )}
-      {cards.length > 0 &&
-        cards.map((el) => {
-          return (
-            <Card
-              key={el.id}
-              id={el.id}
-              title={el.title}
-              desc={el.description}
-            />
-          );
-        })}
+      <div className="cards overflow-y-auto max-h-64">
+        {cards.length > 0 &&
+          cards.map((el) => {
+            return (
+              <Card
+                key={el.id}
+                id={el.id}
+                listId={id}
+                title={el.title}
+                desc={el.description}
+              />
+            );
+          })}
+      </div>
       <div className="mt-4">
         {addNewCardOpen ? (
           <CreateCard id={id} onSave={() => setAddNewCardOpen(false)} />

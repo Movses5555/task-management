@@ -72,13 +72,10 @@ const reducersMap = {
   [types.CREATE_CARD_COMPLETED]: (state, action) => {
     const { id, title, description } = action.payload;
     let newCard = {
-      id:uuidv4(),
+      id: uuidv4(),
       title,
       description,
     };
-    console.log('====================================');
-    console.log(newCard);
-    console.log('====================================');
     let newList = [...state.data].map((el) => {
       if (el.id === id) {
         el = {
@@ -88,11 +85,65 @@ const reducersMap = {
       }
       return el;
     });
-    console.log(newList);
     return {
       ...state,
       data: newList,
       isCreateFetching: false,
+    };
+  },
+  [types.DELETE_CARD_START]: (state) => {
+    return {
+      ...state,
+      isCardDeleteFetching: true,
+    };
+  },
+  [types.DELETE_CARD_COMPLETED]: (state, action) => {
+    const { id, listId } = action.payload;
+    let newList = [...state.data].map((el) => {
+      if (el.id === listId) {
+        el.cards = el.cards.filter((card) => card.id !== id);
+      }
+      return el;
+    });
+    return {
+      ...state,
+      data: newList,
+      isCardDeleteFetching: false,
+    };
+  },
+  [types.EDIT_CARD_START]: (state) => {
+    return {
+      ...state,
+      isCardEditFetching: true,
+    };
+  },
+  [types.EDIT_CARD_COMPLETED]: (state, action) => {
+    const { id, listId, title, description } = action.payload;
+    let newList = [...state.data].map((el) => {
+      if (el.id === listId) {
+        let newCards = [...el.cards].map((card) => {
+          if (card.id === id) {
+            card = {
+              ...card,
+              title,
+              description,
+            };
+          }
+          return card;
+        });
+        console.log(newCards);
+        el = {
+          ...el,
+          cards: newCards,
+        };
+      }
+      return el;
+    });
+    console.log(newList);
+    return {
+      ...state,
+      data: newList,
+      isCardEditFetching: false,
     };
   },
 };

@@ -10,8 +10,21 @@ function List() {
   useEffect(() => {
     setList(listData);
   }, [listData]);
+  const style = {
+    position: "relative",
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    width: "100%",
+    height: "90%",
+    paddingRight: "1rem",
+    overflow: "scroll hidden",
+    scrollSnapType: "x mandatory",
+    scrollPadding: "0px 1.25rem",
+    scrollbarWidth: "none",
+  };
   return (
-    <Box sx={{ display: "inline-flex" }}>
+    <Box sx={style}>
       <CreateList />
       <div className="flex ml-5 gap-6 items-start">
         {list.map((el) => {

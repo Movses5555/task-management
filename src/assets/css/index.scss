@@ -2,5 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 @import 'base/reset';
-@import 'components/toaster';
 @import 'layout/index';
+@import 'components/toaster';
+@import 'components/list.scss'

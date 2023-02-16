@@ -36,7 +36,7 @@ function CreateList() {
     };
   });
   return (
-    <div className="max-w-xsm flex flex-col create-container">
+    <div className="min-w-51 flex flex-col create-container">
       <Button
         onClick={() => setMenuOpen(!menuOpen)}
         startIcon={<AddSharpIcon />}

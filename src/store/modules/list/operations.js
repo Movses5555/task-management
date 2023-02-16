@@ -56,3 +56,32 @@ export const createNewCardOperation = (data) => {
     }
   };
 };
+
+
+export const deleteCardOperation = (data) => {
+  return async (dispatch) => {
+    dispatch(actions.deleteCardStart());
+    try {
+      await sleep();
+      dispatch(actions.deleteCardCompleted(data));
+      toast.success("Card was successfully deleted");
+    } catch (error) {
+      toast.error("Something went wrong");
+      console.error(error);
+    }
+  };
+};
+
+export const editCardOperation = (data) => {
+  return async (dispatch) => {
+    dispatch(actions.editCardStart());
+    try {
+      await sleep();
+      dispatch(actions.editCardCompleted(data));
+      toast.success("Card was successfully Edited");
+    } catch (error) {
+      toast.error("Something went wrong");
+      console.error(error);
+    }
+  };
+};
