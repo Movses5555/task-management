@@ -60,6 +60,7 @@ function EditList(props) {
                   onClick={() => checkValid(true)}
                   variant="contained"
                   color="primary"
+                  disabled={title === newListName}
                 >
                   Save
                 </Button>

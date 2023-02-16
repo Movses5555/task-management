@@ -38,7 +38,7 @@ function ListDetails(props) {
           ref={provided.innerRef}
         >
           <Droppable droppableId={id}>
-            {(provided, snapshot) => (
+            {(provided) => (
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}

@@ -27,8 +27,7 @@ function Card(props) {
             {...provided.dragHandleProps}
             className={`w-full p-3 bg-white mt-4 shadow-md rounded-lg card-${id}`}
           >
-            <h3 className="font-bold text-lg">{title}</h3>
-            <p className="truncate">{desc}</p>
+            <h5 className="font-semibold text-md truncate">{title}</h5>
             <div className="w-full flex justify-end">
               <IconButton
                 color="primary"

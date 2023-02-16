@@ -31,7 +31,6 @@ function List() {
     if (!result.destination) return;
     const { source, destination, type } = result;
     let saveData = {
-      
       sourceId: source.droppableId,
       destinationId: destination.droppableId,
       sourceIndex: source.index,
@@ -63,6 +62,7 @@ function List() {
                   />
                 );
               })}
+              {provided.placeholder}
             </div>
           )}
         </Droppable>

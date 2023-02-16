@@ -30,7 +30,7 @@ function CardEdit(props) {
     p: 4,
   };
   const isFetching = useSelector((state) => state.list.isCardEditFetching);
-
+  let isDisabled = title === newName && desc === newDesc;
   const dispatch = useDispatch();
   const checkValid = async () => {
     let checkName = checkAlphaNumericNotEmpty(newName);
@@ -99,14 +99,17 @@ function CardEdit(props) {
             loadingPosition="start"
             startIcon={<SaveIcon />}
             variant="contained"
-          >Saving</LoadingButton>
+          >
+            Saving
+          </LoadingButton>
         ) : (
           <Button
-            onClick={(e) => {
+            onClick={() => {
               checkValid();
             }}
             variant="contained"
             color="success"
+            disabled={isDisabled}
           >
             Save
           </Button>
