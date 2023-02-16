@@ -4,12 +4,6 @@ import { v4 as uuidv4 } from "uuid";
 import initialState from "./initialState";
 
 const reducersMap = {
-  [types.CREATE_LIST_START]: (state) => {
-    return {
-      ...state,
-      isCreateFetching: true,
-    };
-  },
   [types.CREATE_LIST_COMPLETED]: (state, action) => {
     const { payload } = action;
     let newItem = {
@@ -23,12 +17,7 @@ const reducersMap = {
       isCreateFetching: false,
     };
   },
-  [types.EDIT_LIST_START]: (state) => {
-    return {
-      ...state,
-      isEditFetching: true,
-    };
-  },
+
   [types.EDIT_LIST_COMPLETED]: (state, action) => {
     const {
       payload: { title, id },
@@ -48,12 +37,6 @@ const reducersMap = {
       isEditFetching: false,
     };
   },
-  [types.DELETE_LIST_START]: (state) => {
-    return {
-      ...state,
-      isDeleteFetching: true,
-    };
-  },
   [types.DELETE_LIST_COMPLETED]: (state, action) => {
     const id = action.payload;
     let newData = [...state.data].filter((el) => el.id !== id);
@@ -61,12 +44,6 @@ const reducersMap = {
       ...state,
       data: newData,
       isDeleteFetching: false,
-    };
-  },
-  [types.CREATE_CARD_START]: (state) => {
-    return {
-      ...state,
-      isCreateFetching: true,
     };
   },
   [types.CREATE_CARD_COMPLETED]: (state, action) => {
@@ -91,12 +68,6 @@ const reducersMap = {
       isCreateFetching: false,
     };
   },
-  [types.DELETE_CARD_START]: (state) => {
-    return {
-      ...state,
-      isCardDeleteFetching: true,
-    };
-  },
   [types.DELETE_CARD_COMPLETED]: (state, action) => {
     const { id, listId } = action.payload;
     let newList = [...state.data].map((el) => {
@@ -111,12 +82,7 @@ const reducersMap = {
       isCardDeleteFetching: false,
     };
   },
-  [types.EDIT_CARD_START]: (state) => {
-    return {
-      ...state,
-      isCardEditFetching: true,
-    };
-  },
+
   [types.EDIT_CARD_COMPLETED]: (state, action) => {
     const { id, listId, title, description } = action.payload;
     let newList = [...state.data].map((el) => {

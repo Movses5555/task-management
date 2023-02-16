@@ -2,14 +2,18 @@ import React, { useState } from "react";
 import SaveIcon from "@mui/icons-material/Save";
 import Button from "@mui/material/Button";
 import { LoadingButton } from "@mui/lab";
-import { FormControl, Input, TextField } from "@mui/material";
+import { FormControl, TextField } from "@mui/material";
 import { checkAlphaNumericNotEmpty } from "helpers/alphanumericCheck";
 import { useDispatch, useSelector } from "react-redux";
 import { editListOperation } from "store/modules/list/operations";
+import { namedRequestsInProgress } from "store/modules/request/selectors";
+import { requestsEnum } from "store/modules/requestsEnum";
 function EditList(props) {
   const { title, saveEdit, id } = props;
   const dispatch = useDispatch();
-  const isFetching = useSelector((state) => state.list.isEditFetching);
+  const isFetching = useSelector((state) =>
+    namedRequestsInProgress(state, requestsEnum().editList)
+  );
   const [newListName, setNewListName] = useState(title);
   const [nameError, setNameError] = useState("");
   const checkValid = async (bool) => {

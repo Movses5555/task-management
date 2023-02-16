@@ -9,6 +9,8 @@ import { LoadingButton } from "@mui/lab";
 import SaveIcon from "@mui/icons-material/Save";
 import { editCardOperation } from "store/modules/list/operations";
 import { useDispatch, useSelector } from "react-redux";
+import { namedRequestsInProgress } from "store/modules/request/selectors";
+import { requestsEnum } from "store/modules/requestsEnum";
 function CardEdit(props) {
   const { title, desc, listId, id, closeModal } = props;
   const [newName, setNewName] = useState(title);
@@ -29,7 +31,9 @@ function CardEdit(props) {
     boxShadow: 24,
     p: 4,
   };
-  const isFetching = useSelector((state) => state.list.isCardEditFetching);
+  const isFetching = useSelector((state) =>
+    namedRequestsInProgress(state, requestsEnum(id).editCard)
+  );
   let isDisabled = title === newName && desc === newDesc;
   const dispatch = useDispatch();
   const checkValid = async () => {

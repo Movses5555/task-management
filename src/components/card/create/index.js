@@ -6,10 +6,15 @@ import { FormControl, TextField } from "@mui/material";
 import { checkAlphaNumericNotEmpty } from "helpers/alphanumericCheck";
 import { useDispatch, useSelector } from "react-redux";
 import { createNewCardOperation } from "store/modules/list/operations";
+import { requestsEnum } from "store/modules/requestsEnum";
+import { namedRequestsInProgress } from "store/modules/request/selectors";
 function CreateCard(props) {
   const { id, onSave } = props;
   const dispatch = useDispatch();
-  const isFetching = useSelector((state) => state.list.isCreateFetching);
+  const isFetching = useSelector((state) =>
+    namedRequestsInProgress(state, requestsEnum().createCard)
+  );
+  console.log(isFetching);
   const [cardName, setCardName] = useState("");
   const [cardDesc, setCardDesc] = useState("");
   const [errors, setErrors] = useState({
@@ -79,7 +84,8 @@ function CreateCard(props) {
               <Button
                 onClick={(e) => {
                   e.stopPropagation();
-                  checkValid()
+                  checkValid();
+                  
                 }}
                 variant="contained"
                 color="primary"

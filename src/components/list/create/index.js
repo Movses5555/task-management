@@ -1,94 +1,138 @@
-import React, { useEffect, useState } from "react";
+import React, { Component } from "react";
 import AddSharpIcon from "@mui/icons-material/AddSharp";
 import SaveIcon from "@mui/icons-material/Save";
 import Button from "@mui/material/Button";
 import { LoadingButton } from "@mui/lab";
 import { FormControl, TextField } from "@mui/material";
 import { checkAlphaNumericNotEmpty } from "helpers/alphanumericCheck";
-import { useDispatch, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import { createNewList } from "store/modules/list/operations";
-function CreateList() {
-  const dispatch = useDispatch();
-  const isFetching = useSelector((state) => state.list.isCreateFetching);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [listName, setListName] = useState("");
-  const [nameError, setNameError] = useState("");
-  const checkValid = async (bool) => {
+import { namedRequestsInProgress } from "store/modules/request/selectors";
+import { requestsEnum } from "store/modules/requestsEnum";
+
+class CreateList extends Component {
+  constructor(props) {
+    super(props);
+  }
+  state = {
+    menuOpen: false,
+    listName: "",
+    nameError: "",
+  };
+
+  checkValid = async (bool) => {
+    const { createList } = this.props;
+    const { listName } = this.state;
     let result = checkAlphaNumericNotEmpty(listName);
     if (result) {
-      return setNameError(result);
+      this.setState({
+        nameError: result,
+      });
+      return;
     }
     if (bool) {
-      await dispatch(createNewList(listName));
-      setMenuOpen(false);
-      setListName("");
+      await createList(listName);
+      this.setState({
+        menuOpen: false,
+        listName: "",
+      });
     }
   };
-  const closeClickOutSide = (e) => {
+  closeClickOutSide = (e) => {
     if (!e.target.closest(".create-container")) {
-      setMenuOpen(false);
+      this.setState({
+        menuOpen: false,
+      });
     }
   };
-  useEffect(() => {
-    window.addEventListener("click", closeClickOutSide);
-    return () => {
-      window.removeEventListener("click", closeClickOutSide);
-    };
-  });
-  return (
-    <div className="min-w-51 flex flex-col create-container">
-      <Button
-        onClick={() => setMenuOpen(!menuOpen)}
-        startIcon={<AddSharpIcon />}
-        variant="contained"
-        color="primary"
-      >
-        Create new list
-      </Button>
-      {menuOpen && (
-        <div className="p-3 border shadow-md bg-white border-t-0">
-          <FormControl>
-            <TextField
-              label="Name"
-              variant="standard"
-              value={listName}
-              onChange={(e) => setListName(e.target.value)}
-              placeholder="Enter list name"
-              type="text"
-              onFocus={() => setNameError(null)}
-              onBlur={() => checkValid(false)}
-              error={!!nameError}
-              helperText={nameError}
-            />
-            <div className="mt-4">
-              {isFetching ? (
-                <LoadingButton
-                  loading
-                  loadingPosition="start"
-                  startIcon={<SaveIcon />}
-                  variant="outlined"
-                  color="primary"
-                >
-                  Saving
-                </LoadingButton>
-              ) : (
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    checkValid(true);
-                  }}
-                  variant="contained"
-                  color="primary"
-                >
-                  Create
-                </Button>
-              )}
-            </div>
-          </FormControl>
-        </div>
-      )}
-    </div>
-  );
+
+  componentDidMount() {
+    window.addEventListener("click", this.closeClickOutSide);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("click", this.closeClickOutSide);
+  }
+  render() {
+    const { menuOpen, listName, nameError } = this.state;
+    const { isLoading } = this.props;
+    console.log(isLoading);
+    return (
+      <div className="min-w-51 flex flex-col create-container">
+        <Button
+          onClick={() =>
+            this.setState({
+              menuOpen: !this.state.menuOpen,
+            })
+          }
+          startIcon={<AddSharpIcon />}
+          variant="contained"
+          color="primary"
+        >
+          Create new list
+        </Button>
+        {menuOpen && (
+          <div className="p-3 border shadow-md bg-white border-t-0">
+            <FormControl>
+              <TextField
+                label="Name"
+                variant="standard"
+                value={listName}
+                onChange={(e) =>
+                  this.setState({
+                    listName: e.target.value,
+                  })
+                }
+                placeholder="Enter list name"
+                type="text"
+                onFocus={() =>
+                  this.setState({
+                    nameError: null,
+                  })
+                }
+                onBlur={() => this.checkValid(false)}
+                error={!!nameError}
+                helperText={nameError}
+              />
+              <div className="mt-4">
+                {isLoading ? (
+                  <LoadingButton
+                    loading
+                    loadingPosition="start"
+                    startIcon={<SaveIcon />}
+                    variant="outlined"
+                    color="primary"
+                  >
+                    Saving
+                  </LoadingButton>
+                ) : (
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      this.checkValid(true);
+                    }}
+                    variant="contained"
+                    color="primary"
+                  >
+                    Create
+                  </Button>
+                )}
+              </div>
+            </FormControl>
+          </div>
+        )}
+      </div>
+    );
+  }
 }
 
-export default CreateList;
+const mapStateToProps = (state) => ({
+  isLoading: namedRequestsInProgress(state, requestsEnum().createList),
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createList: (data) => dispatch(createNewList(data)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateList);

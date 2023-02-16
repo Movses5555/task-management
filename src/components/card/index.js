@@ -9,12 +9,14 @@ import SaveIcon from "@mui/icons-material/Save";
 import { Modal } from "@mui/material";
 import CardEdit from "./edit";
 import { Draggable } from "react-beautiful-dnd";
+import { namedRequestsInProgress } from "store/modules/request/selectors";
+import { requestsEnum } from "store/modules/requestsEnum";
 function Card(props) {
   const { id, title, listId, desc, index } = props;
   const dispatch = useDispatch();
   const [openEditModal, setOpenEditModal] = useState(false);
-  const isDeleteFetching = useSelector(
-    (state) => state.list.isCardDeleteFetching
+  const isFetching = useSelector((state) =>
+    namedRequestsInProgress(state, requestsEnum(id).deleteCard)
   );
 
   return (
@@ -37,7 +39,7 @@ function Card(props) {
               >
                 <EditIcon />
               </IconButton>
-              {isDeleteFetching ? (
+              {isFetching ? (
                 <LoadingButton
                   loading
                   loadingPosition="center"
