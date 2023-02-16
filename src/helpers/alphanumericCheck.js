@@ -1,6 +1,6 @@
 export const checkAlphaNumericNotEmpty = (val) => {
-  let regex = /[^A-Za-z0-9]/;
-  if (regex.test(val)) {
+  let regex = /^[a-z\d\-\s]+$/i;
+  if (!regex.test(val)) {
     return "Name should be only letters and numbers";
   }
   if (val.length === 0) {

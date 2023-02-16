@@ -14,7 +14,7 @@ function CreateCard(props) {
   const isFetching = useSelector((state) =>
     namedRequestsInProgress(state, requestsEnum().createCard)
   );
-  console.log(isFetching);
+
   const [cardName, setCardName] = useState("");
   const [cardDesc, setCardDesc] = useState("");
   const [errors, setErrors] = useState({

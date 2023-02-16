@@ -42,6 +42,7 @@ class CreateList extends Component {
     if (!e.target.closest(".create-container")) {
       this.setState({
         menuOpen: false,
+        nameError: null,
       });
     }
   };
@@ -55,10 +56,11 @@ class CreateList extends Component {
   render() {
     const { menuOpen, listName, nameError } = this.state;
     const { isLoading } = this.props;
-    console.log(isLoading);
+
     return (
       <div className="min-w-51 flex flex-col create-container">
         <Button
+          sx={{ backgroundColor: "primary.main" }}
           onClick={() =>
             this.setState({
               menuOpen: !this.state.menuOpen,
@@ -66,7 +68,6 @@ class CreateList extends Component {
           }
           startIcon={<AddSharpIcon />}
           variant="contained"
-          color="primary"
         >
           Create new list
         </Button>
