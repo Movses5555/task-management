@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
-import { FormControl, TextField } from "@mui/material";
+import { FormControl, TextField, useTheme } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
@@ -19,6 +19,7 @@ function CardEdit(props) {
     nameError: "",
     descError: "",
   });
+  const theme = useTheme();
   const style = {
     position: "absolute",
     top: "50%",
@@ -59,7 +60,12 @@ function CardEdit(props) {
     <Box sx={style}>
       <div className="relative flex flex-col items-end h-full justify-around">
         <div className="absolute -top-6 -right-6">
-          <IconButton onClick={closeModal}>
+          <IconButton
+            sx={{
+              color: `${theme.palette.mode === "dark" ? "black" : "#333"}`,
+            }}
+            onClick={closeModal}
+          >
             <CloseIcon />
           </IconButton>
         </div>

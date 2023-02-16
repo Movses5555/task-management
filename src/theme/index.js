@@ -21,6 +21,9 @@ export const dark = {
     secondary: {
       main: "#fff",
     },
+    background: {
+      paper: "#fff",
+    },
   },
   components: {
     MuiInputLabel: {
@@ -38,7 +41,9 @@ export const dark = {
             borderColor: "#333",
           },
           "&:hover": {
-            borderColor: "#333",
+            "&:before": {
+              borderBottom: "1px solid #333 !important",
+            },
           },
         },
         input: {
@@ -49,6 +54,24 @@ export const dark = {
         },
         label: {
           color: "#333",
+        },
+      },
+    },
+    MuiLoadingButton: {
+      styleOverrides: {
+        root: {
+          color: "#fff",
+          backgroundColor: "#2e2e2e",
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          "&.Mui-disabled": {
+            color: "#fff",
+            backgroundColor: "rgb(0 0 0 / 37%)",
+          },
         },
       },
     },

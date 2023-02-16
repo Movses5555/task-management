@@ -63,7 +63,7 @@ function EditList(props) {
                   size="small"
                   onClick={() => checkValid(true)}
                   variant="contained"
-                  color="primary"
+                  color="success"
                   disabled={title === newListName}
                 >
                   Save
