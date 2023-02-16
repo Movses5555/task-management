@@ -10,6 +10,8 @@ export const DELETE_CARD_START = "list/DELETE_CARD_START";
 export const DELETE_CARD_COMPLETED = "list/DELETE_CARD_COMPLETED";
 export const EDIT_CARD_START = "list/EDIT_CARD_START";
 export const EDIT_CARD_COMPLETED = "list/EDIT_CARD_COMPLETED";
+export const DROP_CARD_COMPLETED = "list/DROP_CARD_COMPLETED";
+
 
 
 

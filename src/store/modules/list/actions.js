@@ -47,6 +47,11 @@ const editCardCompleted = (data) => ({
   type: types.EDIT_CARD_COMPLETED,
   payload: data,
 });
+
+const dropCardCompleted = (data) => ({
+  type: types.DROP_CARD_COMPLETED,
+  payload: data,
+});
 export {
   createListCompleted,
   createListStart,
@@ -60,4 +65,5 @@ export {
   deleteCardCompleted,
   editCardStart,
   editCardCompleted,
+  dropCardCompleted,
 };

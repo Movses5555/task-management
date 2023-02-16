@@ -8,8 +8,9 @@ import { LoadingButton } from "@mui/lab";
 import SaveIcon from "@mui/icons-material/Save";
 import { Modal } from "@mui/material";
 import CardEdit from "./edit";
+import { Draggable } from "react-beautiful-dnd";
 function Card(props) {
-  const { id, title, listId, desc } = props;
+  const { id, title, listId, desc, index } = props;
   const dispatch = useDispatch();
   const [openEditModal, setOpenEditModal] = useState(false);
   const isDeleteFetching = useSelector(
@@ -18,42 +19,49 @@ function Card(props) {
 
   return (
     <>
-      <div
-        className={`w-full p-3 bg-white mt-4 shadow-md rounded-lg card-${id}`}
-      >
-        <h3 className="font-bold text-lg">{title}</h3>
-        <p className="truncate">{desc}</p>
-        <div className="w-full flex justify-end">
-          <IconButton
-            color="primary"
-            size="small"
-            onClick={() => setOpenEditModal(true)}
-            aria-label="edit"
+      <Draggable index={index} draggableId={id}>
+        {(provided) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            className={`w-full p-3 bg-white mt-4 shadow-md rounded-lg card-${id}`}
           >
-            <EditIcon />
-          </IconButton>
-          {isDeleteFetching ? (
-            <LoadingButton
-              loading
-              loadingPosition="center"
-              startIcon={<SaveIcon />}
-              variant="text"
-              color="primary"
-            />
-          ) : (
-            <IconButton
-              onClick={() => {
-                dispatch(deleteCardOperation({ id, listId }));
-              }}
-              color="error"
-              size="small"
-              aria-label="delete"
-            >
-              <DeleteIcon />
-            </IconButton>
-          )}
-        </div>
-      </div>
+            <h3 className="font-bold text-lg">{title}</h3>
+            <p className="truncate">{desc}</p>
+            <div className="w-full flex justify-end">
+              <IconButton
+                color="primary"
+                size="small"
+                onClick={() => setOpenEditModal(true)}
+                aria-label="edit"
+              >
+                <EditIcon />
+              </IconButton>
+              {isDeleteFetching ? (
+                <LoadingButton
+                  loading
+                  loadingPosition="center"
+                  startIcon={<SaveIcon />}
+                  variant="text"
+                  color="primary"
+                />
+              ) : (
+                <IconButton
+                  onClick={() => {
+                    dispatch(deleteCardOperation({ id, listId }));
+                  }}
+                  color="error"
+                  size="small"
+                  aria-label="delete"
+                >
+                  <DeleteIcon />
+                </IconButton>
+              )}
+            </div>
+          </div>
+        )}
+      </Draggable>
       {openEditModal && (
         <Modal open={openEditModal} onClose={() => setOpenEditModal(false)}>
           <CardEdit
