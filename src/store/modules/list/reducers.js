@@ -7,7 +7,7 @@ const reducersMap = {
   [types.CREATE_LIST_START]: (state) => {
     return {
       ...state,
-      isFetching: true,
+      isCreateFetching: true,
     };
   },
   [types.CREATE_LIST_COMPLETED]: (state, action) => {
@@ -20,13 +20,13 @@ const reducersMap = {
     return {
       ...state,
       data: [...state.data, newItem],
-      isFetching: false,
+      isCreateFetching: false,
     };
   },
   [types.EDIT_LIST_START]: (state) => {
     return {
       ...state,
-      isFetching: true,
+      isEditFetching: true,
     };
   },
   [types.EDIT_LIST_COMPLETED]: (state, action) => {
@@ -45,24 +45,22 @@ const reducersMap = {
     return {
       ...state,
       data: newData,
-      isFetching: false,
+      isEditFetching: false,
     };
   },
   [types.DELETE_LIST_START]: (state) => {
     return {
       ...state,
-      isFetching: true,
+      isDeleteFetching: true,
     };
   },
   [types.DELETE_LIST_COMPLETED]: (state, action) => {
-    console.log(action.payload);
     const id = action.payload;
     let newData = [...state.data].filter((el) => el.id !== id);
-    console.log(newData);
     return {
       ...state,
       data: newData,
-      isFetching: false,
+      isDeleteFetching: false,
     };
   },
 };

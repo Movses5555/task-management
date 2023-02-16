@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import CreateList from "./create";
@@ -10,9 +11,9 @@ function List() {
     setList(listData);
   }, [listData]);
   return (
-    <div className="flex">
+    <Box sx={{ display: "inline-flex" }}>
       <CreateList />
-      <div className="flex ml-5 gap-6">
+      <div className="flex ml-5 gap-6 items-start">
         {list.map((el) => {
           return (
             <ListDetails
@@ -24,7 +25,7 @@ function List() {
           );
         })}
       </div>
-    </div>
+    </Box>
   );
 }
 

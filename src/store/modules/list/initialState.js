@@ -1,6 +1,8 @@
 const initialState = {
   data: [],
-  isFetching: false,
+  isCreateFetching: false,
+  isDeleteFethcing: false,
+  isEditFetching: false,
 };
 
 export default initialState;

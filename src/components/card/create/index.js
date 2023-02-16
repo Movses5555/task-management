@@ -1,32 +1,29 @@
 import React, { useState } from "react";
+import AddSharpIcon from "@mui/icons-material/AddSharp";
 import SaveIcon from "@mui/icons-material/Save";
 import Button from "@mui/material/Button";
 import { LoadingButton } from "@mui/lab";
 import { FormControl, Input, TextField } from "@mui/material";
 import { checkAlphaNumeric } from "helpers/alphanumericCheck";
 import { useDispatch, useSelector } from "react-redux";
-import { editListOperation } from "store/modules/list/operations";
-function EditList(props) {
-  const { title, saveEdit, id } = props;
+import { createNewList } from "store/modules/list/operations";
+function CreateCard(props) {
+  const { id } = props;
   const dispatch = useDispatch();
-  const isFetching = useSelector((state) => state.list.isEditFetching);
-  const [newListName, setNewListName] = useState(title);
+  const isFetching = useSelector((state) => state.list.isCreateFetching);
+  const [listName, setListName] = useState("");
   const [nameError, setNameError] = useState("");
   const checkValid = async (bool) => {
-    let result = checkAlphaNumeric(newListName);
+    let result = checkAlphaNumeric(listName);
     if (result) {
       return setNameError(result);
     }
-    if (newListName.length === 0) {
+    if (listName.length === 0) {
       return setNameError(`Name should't be empty`);
     }
     if (bool) {
-      let saveData = {
-        title: newListName,
-        id,
-      };
-      await dispatch(editListOperation(saveData));
-      saveEdit();
+      await dispatch(createNewList(listName));
+      setListName("");
     }
   };
   return (
@@ -36,8 +33,8 @@ function EditList(props) {
           <TextField
             label="Name"
             variant="standard"
-            value={newListName}
-            onChange={(e) => setNewListName(e.target.value)}
+            value={listName}
+            onChange={(e) => setListName(e.target.value)}
             placeholder="Enter list name"
             type="text"
             onFocus={() => setNameError(null)}
@@ -57,24 +54,13 @@ function EditList(props) {
                 Saving
               </LoadingButton>
             ) : (
-              <div className="flex gap-2 justify-end">
-                <Button
-                  size="small"
-                  onClick={() => checkValid(true)}
-                  variant="contained"
-                  color="primary"
-                >
-                  Save
-                </Button>
-                <Button
-                  size="small"
-                  onClick={() => saveEdit()}
-                  variant="contained"
-                  color="error"
-                >
-                  Cancel
-                </Button>
-              </div>
+              <Button
+                onClick={() => checkValid(true)}
+                variant="contained"
+                color="primary"
+              >
+                Create
+              </Button>
             )}
           </div>
         </FormControl>
@@ -83,4 +69,4 @@ function EditList(props) {
   );
 }
 
-export default EditList;
+export default CreateCard;
